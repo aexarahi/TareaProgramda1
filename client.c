@@ -42,7 +42,7 @@ int main(int argc, char *argv[])//main del programa client
 
     int num_socket, num_bytes2;
     char bufferCadena[MAXDATASIZE];
-    char bufferCad;
+    int *bufferCad;
     char bufferNmb[100];
     struct addrinfo hints, *servinfo, *p;
     int rv;
@@ -100,23 +100,24 @@ int main(int argc, char *argv[])//main del programa client
 			perror("recv nombre");            
 			}
 			
-			
-			
+			printf("client: recibe %s\n", bufferNmb);
+		
+		*bufferCad = 246;
+		
         arch2 = fopen("tr", "wb");
-		recv(num_socket, &bufferCad, 100, 0); //cantidad de bytes a recv
-
-            int i=1;
-            char*size =&bufferCad;
-            int tamano=atoi(size);
-            printf(" que mier %s",&bufferCad);
+		recv(num_socket, bufferCad, 100, 0); //cantidad de bytes a recv
+		
+		printf("client: recibe %d cantidad de bytes\n", *bufferCad);
+			
+            int i=0;
             
-              
-				printf("client: recibe %s\n", bufferNmb);
-				printf("client: recibe %d cantidad de bytes\n", tamano);
-            while(tamano!=i){
+            printf("client: recibe %d cantidad de bytes\n", bufferCad);
+            
+            
+            while(*bufferCad!=i){
 				  recv(num_socket, &buffRsv, 1, 0);
 				  fwrite(&buffRsv, 1, 1, arch2);
-				  i=i+1;
+				  i++;
 		  }
 		  fclose(arch2);
  
@@ -128,4 +129,3 @@ int main(int argc, char *argv[])//main del programa client
     close(num_socket);
     return 0;
 }
-

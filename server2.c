@@ -60,7 +60,7 @@ int main(int argc, char *argv[])//main de la funcion Server
     char *cadenaS;
     char bufferRead;
     cadenaS = "Finalizar";
-    char bufint[100];
+  
 
 
     if (argc != 2) {
@@ -149,24 +149,25 @@ int main(int argc, char *argv[])//main de la funcion Server
             
             
 
-
 			fseek(arch, 0, SEEK_END);
 			int size = ftell(arch);			
 			fseek(arch, 0, SEEK_SET);
-			sprintf(bufint,"%d",size);
-			printf("%d",size);
 			
-			
-          
+			          
             if (arch==NULL) perror ("Error al abrir el archivo");
             if(send(new_fd, archivo, 50, 0) == -1)
                 perror("Error en el nombre del archivo");
-            if(send(new_fd, bufint,100 , 0) == -1)
+            if(send(new_fd, &size,4 , 0) == -1)
                 perror("Error en la cantidad del bytes del archivo");
-            while(!feof(arch)){
+                
+                int n=0;
+                
+            while(size){
 				fread(&bufferRead,1,1,arch);			
-            send(new_fd, &bufferRead, 1, 0);
-               
+				send(new_fd, &bufferRead, 1, 0);
+					n++;
+					size--;
+					printf("si: %d\n ", n);
 			}
 			fclose(arch);
             printf("Enviando archivo...\n");
